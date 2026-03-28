@@ -64,6 +64,10 @@
       gap: 6px;
     }
 
+    .lang-pair--wide {
+      gap: 18px;
+    }
+
     .lang-pair--tight { gap: 2px; }
 
     .en-h1, .en-h2, .en-h3, .mr-h1, .mr-h2, .mr-h3,
@@ -250,66 +254,55 @@
     .gallery-carousel {
       grid-column: 1 / -1;
       position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 18px;
+    }
+
+    .carousel-btn {
+      width: 56px;
+      height: 56px;
+      border-radius: 999px;
+      border: 1px solid var(--color-border);
+      background: var(--color-background);
+      color: var(--color-accent-dark);
+      font: 600 28px/1 "Inter Tight", Arial, sans-serif;
+      cursor: pointer;
+      box-shadow: var(--shadow-soft);
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+
+    .carousel-btn:hover {
+      background: var(--color-background-soft);
+      transform: translateY(-1px);
+    }
+
+    .carousel-stage {
+      width: min(100%, 760px);
+      position: relative;
+    }
+
+    .carousel-window {
       overflow: hidden;
+      border-radius: var(--radius-media);
     }
 
     .gallery-track {
       display: flex;
-      gap: var(--gutter-desktop);
-      width: max-content;
-      animation: scrollGallery 42s linear infinite;
+      width: 100%;
+      transition: transform 0.55s ease;
       will-change: transform;
     }
 
-    .gallery-carousel:hover .gallery-track {
-      animation-play-state: paused;
-    }
-
-    .gallery-track::-webkit-scrollbar { height: 0; }
-    .gallery-track::-webkit-scrollbar-thumb { background: transparent; }
-    .gallery-track::-webkit-scrollbar-track { background: transparent; }
-
-    @keyframes scrollGallery {
-      from { transform: translateX(0); }
-      to { transform: translateX(calc(-50% - (var(--gutter-desktop) / 2))); }
-    }
-
     .carousel-card {
-      flex: 0 0 min(32vw, 360px);
+      min-width: 100%;
       display: grid;
-      gap: 12px;
+      gap: 0;
     }
-
-    .image-card {
-      position: relative;
-      aspect-ratio: 4 / 5;
-      border-radius: var(--radius-media);
-      overflow: hidden;
-      background: var(--color-background-soft);
-      border: 1px solid var(--color-border);
-      box-shadow: var(--shadow-soft);
-    }
-
-    .image-card::before {
-      content: attr(data-label);
-      position: absolute;
-      top: 16px;
-      left: 16px;
-      z-index: 2;
-      padding: 7px 11px;
-      border-radius: 999px;
-      background: rgba(255, 254, 255, 0.92);
-      border: 1px solid var(--color-border);
-      color: var(--color-accent-dark);
-      font: 500 12px/1.2 "Inter Tight", Arial, sans-serif;
-    }
-
-    .image-card img { width: 100%; height: 100%; object-fit: cover; }
 
     .carousel-meta {
-      display: grid;
-      gap: 6px;
-      padding: 0 2px;
+      display: none;
     }
 
     .footer {
@@ -375,6 +368,13 @@
     }
 
     @media (max-width: 768px) {
+      .gallery-carousel { gap: 10px; }
+      .carousel-btn {
+        width: 46px;
+        height: 46px;
+        font-size: 24px;
+      }
+      .carousel-stage { width: min(100%, 100% - 120px); }
       .container { width: min(100% - (2 * var(--gutter-mobile)), var(--max-content)); }
       .grid-12, .intro-card__copy, .media-grid, .gallery-grid { gap: 16px; }
       .section { padding: var(--section-pad-tablet) 0; }
@@ -408,6 +408,26 @@
     }
 
     @media (max-width: 375px) {
+      .gallery-carousel {
+        display: grid;
+        grid-template-columns: 1fr auto auto 1fr;
+        align-items: center;
+      }
+      .carousel-stage {
+        grid-column: 1 / -1;
+        width: 100%;
+        order: 1;
+      }
+      .carousel-btn--prev {
+        grid-column: 2;
+        order: 2;
+        margin-top: 14px;
+      }
+      .carousel-btn--next {
+        grid-column: 3;
+        order: 2;
+        margin-top: 14px;
+      }
       .section { padding: var(--section-pad-mobile) 0; }
       .hero { padding: 24px 0 32px; }
       .hero__block { padding-top: 96px; }
@@ -427,12 +447,9 @@
     <div class="container">
       <div class="grid-12">
         <div class="hero__block">
-          <div class="chip"><span class="chip__dot"></span>Editable bilingual tribute page</div>
-          <div class="lang-pair lang-pair--tight" style="margin-top: 22px;">
+                    <div class="lang-pair lang-pair--tight" style="margin-top: 22px;">
             <h1 class="en-h1">Our guiding light, Dr. Baba Adhav</h1>
-            <h1 class="mr-h1">आमचे मार्गदर्शक, डॉ. बाबा आढाव</h1>
-          </div>
-         
+            <h1 class="mr-h1">डॉ. बाबा आढाव यांचा गौरव</h1>
           </div>
         </div>
       </div>
@@ -444,23 +461,13 @@
       <div class="container">
         <div class="grid-12">
           <article class="intro-card">
-            <div class="intro-card__head">
-             
-          
-              <div class="chip"><span class="chip__dot"></span>All text remains editable</div>
-            </div>
-
             <div class="intro-card__copy">
-              <div class="intro-card__main">
-                <div class="lang-pair">
+              <div class="intro-card__main" style="grid-column: 2 / span 10;">
+                <div class="lang-pair lang-pair--wide">
                   <p class="en-body">Dr. Baba Adhav was a lifelong pillar of support for unorganised workers. He stood with those who keep cities running yet remain unseen within social and economic structures—waste pickers, hamals, rickshaw drivers, domestic workers, and other marginalised labouring communities. And fought for their dignity, rights, and recognition till his last breath. Baba, who defined progress through the lives of the most vulnerable, for us, is more than a leader— he's our moral compass on the journey towards the emancipation of the marginalised.</p>
                   <p class="mr-body">डॉ. बाबा आढाव हे असंघटित कष्टकऱ्यांचे अखंड आधारस्तंभ होते. शहर उभे ठेवणाऱ्या पण समाजरचनेत अदृश्य राहिलेल्या कामगार, कचरावेचक, हमाल, रिक्षाचालक आणि इतर वंचित घटकांच्या सन्मान, हक्क आणि मानवी प्रतिष्ठेसाठी त्यांनी आयुष्यभर संघर्ष केला. विकासाची व्याख्या शेवटच्या माणसाच्या नजरेतून पाहणारे बाबा आमच्यासाठी केवळ नेते नव्हते, तर कष्टकऱ्यांच्या प्रगतीच्या लांब प्रवासावर कायम दरवळत राहणारा दिशादर्शक सुगंध होते.</p>
                 </div>
               </div>
-
-          
-               
-              </aside>
             </div>
           </article>
         </div>
@@ -470,28 +477,18 @@
     <section class="section">
       <div class="container">
         <div class="grid-12">
-          <div class="section-head">
-            <div class="lang-pair">
-           
-       
-
-          <div class="media-grid">
+          <div class="media-grid" style="margin-top:0;">
             <article class="video-card">
               <div class="video-frame">
                 <iframe src="https://www.youtube.com/embed/JSvzvdNZ_Pk" title="Dr. Baba Adhav video 1" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
               </div>
-         
-            </article>
+              </article>
 
             <article class="video-card">
               <div class="video-frame">
                 <iframe src="https://www.youtube.com/embed/I9uTu0Df0jM" title="Dr. Baba Adhav video 2" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
               </div>
-              <div class="video-caption lang-pair">
-                <p class="en-body">Archival video 2.</p>
-                <p class="mr-body">संग्रहातील व्हिडिओ २.</p>
-              </div>
-            </article>
+              </article>
           </div>
         </div>
       </div>
@@ -500,134 +497,50 @@
     <section class="section">
       <div class="container">
         <div class="grid-12">
-          <div class="section-head">
-            <div class="lang-pair">
-             
-          
-          </div>
-
           <div class="gallery-carousel">
-            <div class="gallery-track">
+            <button class="carousel-btn carousel-btn--prev" type="button" aria-label="Previous image">‹</button>
+            <div class="carousel-stage">
+              <div class="carousel-window">
+            <div class="gallery-track" id="galleryTrack">
               <article class="carousel-card">
                 <figure class="image-card" data-label="Photo 01 — 4:5">
                   <img src="assets/WM-IMG-2012.01.11-SWaCH-PCMC-Anniversary-1262.jpg" alt="Dr. Baba Adhav with a large gathering" />
                 </figure>
-                <div class="carousel-meta lang-pair">
-                  <p class="en-body">WM-IMG-2012.01.11-SWaCH-PCMC-Anniversary-1262.jpg</p>
-                
-                </div>
               </article>
 
               <article class="carousel-card">
                 <figure class="image-card" data-label="Photo 02 — 4:5">
                   <img src="assets/WM-Scholarship-Day-People-0822-19.jpg" alt="Community gathering in a hall" />
                 </figure>
-                <div class="carousel-meta lang-pair">
-                  <p class="en-body">WM-Scholarship-Day-People-0822-19.jpg</p>
-                 
-                </div>
               </article>
 
               <article class="carousel-card">
                 <figure class="image-card" data-label="Photo 03 — 4:5">
                   <img src="assets/WM-IMG-2011.10.18-0476.jpg" alt="Dr. Baba Adhav speaking at an event" />
                 </figure>
-                <div class="carousel-meta lang-pair">
-                  <p class="en-body">WM-IMG-2011.10.18-0476.jpg</p>
-         
-                </div>
               </article>
 
               <article class="carousel-card">
                 <figure class="image-card" data-label="Photo 04 — 4:5">
                   <img src="assets/WM-IMG-Wastepicker-Meeting-PCMC-2013.02.20-0204.jpg" alt="Waste picker meeting photo" />
                 </figure>
-                <div class="carousel-meta lang-pair">
-                  <p class="en-body">WM-IMG-Wastepicker-Meeting-PCMC-2013.02.20-0204.jpg</p>
-          
-                </div>
               </article>
 
               <article class="carousel-card">
                 <figure class="image-card" data-label="Photo 05 — 4:5">
                   <img src="assets/WM IMG (Pension Parishad) (2012.02.25) (10207).jpg" alt="Pension Parishad event image" />
                 </figure>
-                <div class="carousel-meta lang-pair">
-                  <p class="en-body">WM IMG (Pension Parishad) (2012.02.25) (10207).jpg</p>
-    
-                </div>
               </article>
 
               <article class="carousel-card">
                 <figure class="image-card" data-label="Photo 06 — 4:5">
                   <img src="assets/WM IMG (2012.10.04) (0041).jpg" alt="Archival image of Dr. Baba Adhav" />
                 </figure>
-                <div class="carousel-meta lang-pair">
-                  <p class="en-body">WM IMG (2012.10.04) (0041).jpg</p>
-                  
-                </div>
-              </article>
-
-              <article class="carousel-card" aria-hidden="true">
-                <figure class="image-card" data-label="Photo 01 — 4:5">
-                  <img src="assets/WM-IMG-2012.01.11-SWaCH-PCMC-Anniversary-1262.jpg" alt="" />
-                </figure>
-                <div class="carousel-meta lang-pair">
-                  <p class="en-body">WM-IMG-2012.01.11-SWaCH-PCMC-Anniversary-1262.jpg</p>
-   
-                </div>
-              </article>
-
-              <article class="carousel-card" aria-hidden="true">
-                <figure class="image-card" data-label="Photo 02 — 4:5">
-                  <img src="assets/WM-Scholarship-Day-People-0822-19.jpg" alt="" />
-                </figure>
-                <div class="carousel-meta lang-pair">
-                  <p class="en-body">WM-Scholarship-Day-People-0822-19.jpg</p>
-            
-                </div>
-              </article>
-
-              <article class="carousel-card" aria-hidden="true">
-                <figure class="image-card" data-label="Photo 03 — 4:5">
-                  <img src="assets/WM-IMG-2011.10.18-0476.jpg" alt="" />
-                </figure>
-                <div class="carousel-meta lang-pair">
-                  <p class="en-body">WM-IMG-2011.10.18-0476.jpg</p>
-      
-                </div>
-              </article>
-
-              <article class="carousel-card" aria-hidden="true">
-                <figure class="image-card" data-label="Photo 04 — 4:5">
-                  <img src="assets/WM-IMG-Wastepicker-Meeting-PCMC-2013.02.20-0204.jpg" alt="" />
-                </figure>
-                <div class="carousel-meta lang-pair">
-                  <p class="en-body">WM-IMG-Wastepicker-Meeting-PCMC-2013.02.20-0204.jpg</p>
-           
-                </div>
-              </article>
-
-              <article class="carousel-card" aria-hidden="true">
-                <figure class="image-card" data-label="Photo 05 — 4:5">
-                  <img src="assets/WM IMG (Pension Parishad) (2012.02.25) (10207).jpg" alt="" />
-                </figure>
-                <div class="carousel-meta lang-pair">
-                  <p class="en-body">WM IMG (Pension Parishad) (2012.02.25) (10207).jpg</p>
-          
-                </div>
-              </article>
-
-              <article class="carousel-card" aria-hidden="true">
-                <figure class="image-card" data-label="Photo 06 — 4:5">
-                  <img src="assets/WM IMG (2012.10.04) (0041).jpg" alt="" />
-                </figure>
-                <div class="carousel-meta lang-pair">
-                  <p class="en-body">WM IMG (2012.10.04) (0041).jpg</p>
-
-                </div>
               </article>
             </div>
+              </div>
+            </div>
+            <button class="carousel-btn carousel-btn--next" type="button" aria-label="Next image">›</button>
           </div>
         </div>
       </div>
@@ -644,10 +557,55 @@
         <div class="footer__content">
           <div class="footer__org">Kashtakari Panchayat</div>
           <a class="footer__link" href="https://kashtakaripanchayat.org/">kashtakaripanchayat.org</a>
-      
+          
         </div>
       </div>
     </div>
   </footer>
+  <script>
+    (function () {
+      const track = document.getElementById('galleryTrack');
+      const slides = Array.from(track.children);
+      const prevBtn = document.querySelector('.carousel-btn--prev');
+      const nextBtn = document.querySelector('.carousel-btn--next');
+      let index = 0;
+      let autoAdvance;
+
+      function updateCarousel() {
+        track.style.transform = `translateX(-${index * 100}%)`;
+      }
+
+      function goNext() {
+        index = (index + 1) % slides.length;
+        updateCarousel();
+      }
+
+      function goPrev() {
+        index = (index - 1 + slides.length) % slides.length;
+        updateCarousel();
+      }
+
+      function startAutoAdvance() {
+        autoAdvance = window.setInterval(goNext, 3500);
+      }
+
+      function resetAutoAdvance() {
+        window.clearInterval(autoAdvance);
+        startAutoAdvance();
+      }
+
+      nextBtn.addEventListener('click', function () {
+        goNext();
+        resetAutoAdvance();
+      });
+
+      prevBtn.addEventListener('click', function () {
+        goPrev();
+        resetAutoAdvance();
+      });
+
+      startAutoAdvance();
+    })();
+  </script>
 </body>
 </html>
